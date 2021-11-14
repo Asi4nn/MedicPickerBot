@@ -1,9 +1,9 @@
 from random import randint, choice
 
-from discord import Embed, Colour, File
+from discord import Embed, Colour, File, Game
 from discord.errors import HTTPException, Forbidden
 from discord.ext.commands import Cog, Context, command, check, has_permissions, has_guild_permissions
-from lib.bot import OWNER_IDS
+from lib.bot import OWNER_IDS, PREFIX
 
 # CONTRIBUTORS: add your discord tag and github link in this dictionary
 CONTRIBUTORS = {
@@ -22,6 +22,7 @@ class General(Cog):
 
     @Cog.listener()
     async def on_ready(self):
+        await self.bot.change_presence(activity=Game(f"{PREFIX}help"))
         print("General cog ready")
 
     @command(name="source", brief="Gets bot source link with invite link")
