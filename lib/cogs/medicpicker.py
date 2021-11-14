@@ -75,6 +75,7 @@ class MedicPicker(commands.Cog):
             await ctx.send("Use letters for identifying different pugs! (A pug, B pug, etc.)")
             return
 
+        pug = pug.upper()
         members = ctx.author.voice.channel.members
 
         if len(members) < 12:
@@ -90,6 +91,9 @@ class MedicPicker(commands.Cog):
 
         # picks medics
         while len(picks) < int(amount):
+            if len(members) == len(state.immunes):
+                await ctx.send("Not enough players to choose from! (Likely too many immune players)")
+                return
             index = randint(0, len(members) - 1)
             if members[index] not in state.immunes and members[index] not in picks and not members[index].bot:
                 picks.append(members[index])
@@ -98,6 +102,20 @@ class MedicPicker(commands.Cog):
         state.immunes += immunes
 
         await ctx.send("Picked medics: " + ", ".join([user.mention for user in picks]))
+
+    @commands.command(name="medics", aliases=["meds"], brief="Gets the current medics for the given pug")
+    async def medics(self, ctx: commands.Context, pug="A"):
+        if not pug.isalpha():
+            await ctx.send("Use letters for identifying different pugs! (A pug, B pug, etc.)")
+            return
+        pug = pug.upper()
+        state = self.get_state(ctx.guild)
+        current_pug = state.get_pug(pug)
+
+        if not current_pug.medics:
+            await ctx.send("Currently no medics")
+        else:
+            await ctx.send(f"Pug {pug} medics: {', '.join([med.mention for med in current_pug.medics])}")
 
     @commands.command(name="immunes", brief="Shows players immune to being rolled as medic")
     async def immunes(self, ctx: commands.Context):
