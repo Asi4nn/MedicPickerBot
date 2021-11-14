@@ -97,6 +97,7 @@ class MedicPicker(commands.Cog):
             index = randint(0, len(members) - 1)
             if members[index] not in state.immunes and members[index] not in picks and not members[index].bot:
                 picks.append(members[index])
+                members.pop(index)
 
         immunes = current_pug.add_medics(picks)
         state.immunes += immunes

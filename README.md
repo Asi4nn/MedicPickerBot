@@ -11,4 +11,5 @@ Medic picker bot as requested by alfredodan and firstly tested and used in Pasta
 - Randomly picking 1-2 meds within a voice channel
 - Giving people who have played medic immunity to being picked
 - Setting and removing medic immunity
+- Viewing immune player and current medics
 - More to add later...
